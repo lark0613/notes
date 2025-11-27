@@ -4,19 +4,44 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Lark 的笔记站</title>
+  
+  <!-- Docsify 核心 JS 先加载 -->
   <script src="https://cdn.jsdelivr.net/npm/docsify@4/lib/docsify.min.js"></script>
+  
+  <!-- 主题 CSS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify@4/themes/vue.css">
 </head>
 <body>
+  <!-- Docsify 会把内容渲染到这里 -->
   <div id="app"></div>
+  
+  <!-- 配置脚本放最后，确保 DOM 就位 -->
   <script>
-    window.$docsify = {
-      name: 'Lark 的笔记',
-      repo: 'lark0613/notes',
-      loadSidebar: '_sidebar.md',
-      homepage: 'README.md',
-      maxLevel: 4
-    };
+    // 延迟初始化，防 clientWidth null 错误
+    function initDocsify() {
+      if (typeof Docsify !== 'undefined' && document.body) {
+        window.$docsify = {
+          name: 'Lark 的笔记',
+          repo: 'lark0613/notes',
+          loadSidebar: '_sidebar.md',
+          homepage: 'README.md',
+          maxLevel: 4,
+          // 加这个：相对路径支持，确保侧边栏加载
+          relativePath: true
+        };
+        Docsify();
+      } else {
+        // 如果还没准备好，1 秒后重试（最多 5 次）
+        setTimeout(initDocsify, 1000);
+      }
+    }
+    
+    // 等页面加载完再初始化
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initDocsify);
+    } else {
+      initDocsify();
+    }
   </script>
 </body>
 </html>
