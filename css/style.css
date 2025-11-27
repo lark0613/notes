@@ -1,370 +1,138 @@
-/* 全局样式重置 */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Microsoft YaHei', 'Arial', sans-serif;
-    transition: background-color 0.3s, color 0.3s; /* 明暗切换过渡效果 */
-}
+/* 原有样式保留，新增/修改以下部分 */
 
-body {
-    background-color: #f5f5f5;
-    color: #333;
-}
-
-/* 暗黑模式基础样式 */
-body.dark-mode {
-    background-color: #1a1a1a;
-    color: #e0e0e0;
-}
-
-/* 容器布局（支持侧边栏收缩） */
-.container {
-    display: flex;
-    min-height: 100vh;
-}
-
-/* 侧边栏样式（新增收缩逻辑） */
-.sidebar {
-    width: 280px;
-    background-color: #2d3748;
-    color: #fff;
-    padding: 20px;
-    overflow-y: auto;
-    position: fixed;
-    height: 100vh;
-    transition: width 0.3s ease; /* 收缩动画 */
-    z-index: 10;
-}
-
-/* 侧边栏收缩状态 */
-.sidebar.collapsed {
-    width: 60px; /* 收缩后宽度（仅显示图标） */
-}
-
-/* 侧边栏头部（标题+收缩按钮） */
-.sidebar-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #4a5568;
-}
-
-.sidebar.collapsed .sidebar-header h2 {
-    display: none; /* 收缩后隐藏标题 */
-}
-
-/* 收缩按钮样式 */
-.sidebar-toggle {
-    background: transparent;
-    border: none;
-    color: #fff;
-    font-size: 18px;
-    cursor: pointer;
-    padding: 5px;
-    border-radius: 4px;
-    transition: background-color 0.3s;
-}
-
-.sidebar-toggle:hover {
-    background-color: #4a5568;
-}
-
-.sidebar.collapsed .sidebar-toggle i {
-    transform: rotate(180deg); /* 收缩后图标旋转 */
-}
-
-/* 搜索框样式 */
-.search-box {
-    position: relative;
+/* 排序控件样式 */
+.sort-controls {
     margin-bottom: 20px;
 }
 
-.search-box input {
+.sort-controls select {
     width: 100%;
-    padding: 10px 10px 10px 35px;
+    padding: 8px 12px;
     border-radius: 4px;
     border: none;
     background-color: #4a5568;
     color: #fff;
     font-size: 14px;
+    cursor: pointer;
 }
 
-.search-box input::placeholder {
-    color: #a0aec0;
+.sidebar.collapsed .sort-controls {
+    display: none;
 }
 
-.search-icon {
-    position: absolute;
-    left: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #a0aec0;
-}
-
-.sidebar.collapsed .search-box {
-    display: none; /* 收缩后隐藏搜索框 */
-}
-
-/* 目录列表样式 */
-#note-list {
+/* 多级目录样式 */
+.note-tree {
     list-style: none;
 }
 
-#note-list li {
-    margin: 10px 0;
+.note-tree .dir-item, .note-tree .note-item {
+    margin: 5px 0;
 }
 
-#note-list a {
-    color: #e2e8f0;
-    text-decoration: none;
-    display: block;
+/* 目录项（文件夹+笔记）通用样式 */
+.dir-header, .note-link {
+    display: flex;
+    align-items: center;
     padding: 8px 12px;
     border-radius: 4px;
+    color: #e2e8f0;
+    text-decoration: none;
+    cursor: pointer;
     transition: background-color 0.3s;
-    white-space: nowrap; /* 禁止文字换行 */
-    overflow: hidden; /* 隐藏超出部分 */
-    text-overflow: ellipsis; /* 超出部分显示省略号 */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-#note-list a:hover {
+.dir-header:hover, .note-link:hover {
     background-color: #4a5568;
 }
 
-#note-list a.active {
+.note-link.active {
     background-color: #3182ce;
     color: #fff;
 }
 
-.sidebar.collapsed #note-list a {
-    justify-content: center;
-    padding: 8px 0;
-    font-size: 0; /* 收缩后隐藏文字 */
+/* 文件夹图标样式 */
+.dir-icon {
+    margin-right: 8px;
+    transition: transform 0.3s;
 }
 
-.sidebar.collapsed #note-list a::before {
-    content: "📄"; /* 收缩后显示文件图标 */
+.dir-expanded .dir-icon {
+    transform: rotate(90deg);
+}
+
+/* 子目录缩进 */
+.dir-children {
+    list-style: none;
+    margin-left: 20px;
+    display: none; /* 默认折叠 */
+}
+
+.dir-expanded .dir-children {
+    display: block; /* 展开时显示 */
+}
+
+/* 笔记图标样式 */
+.note-icon {
+    margin-right: 8px;
+    color: #a0aec0;
+}
+
+/* 收缩状态下的多级目录适配 */
+.sidebar.collapsed .dir-header span, 
+.sidebar.collapsed .note-link span {
+    display: none;
+}
+
+.sidebar.collapsed .dir-icon, 
+.sidebar.collapsed .note-icon {
+    margin-right: 0;
     font-size: 16px;
 }
 
-/* 主内容区样式（适配侧边栏收缩） */
-.content {
-    flex: 1;
-    margin-left: 280px;
-    padding: 40px;
-    max-width: calc(100% - 280px);
-    transition: margin-left 0.3s ease, max-width 0.3s ease;
+.sidebar.collapsed .dir-children {
+    margin-left: 0;
 }
 
-/* 主内容区适配侧边栏收缩 */
-.sidebar.collapsed ~ .content {
-    margin-left: 60px;
-    max-width: calc(100% - 60px);
+/* 搜索结果高亮样式 */
+.highlight {
+    background-color: #ffeb3b;
+    color: #333;
+    padding: 0 2px;
+    border-radius: 2px;
 }
 
-/* 主内容头部（明暗切换按钮） */
-.content-header {
-    display: flex;
-    justify-content: flex-end;
-    margin-bottom: 20px;
+body.dark-mode .highlight {
+    background-color: #ffc107;
+    color: #000;
 }
 
-.theme-toggle {
-    background-color: #3182ce;
-    color: #fff;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 4px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    transition: background-color 0.3s;
+/* 搜索结果提示样式 */
+.search-result-tip {
+    margin-right: 20px;
+    color: #666;
+    font-size: 14px;
 }
 
-.theme-toggle:hover {
-    background-color: #2b6cb0;
+body.dark-mode .search-result-tip {
+    color: #a0aec0;
 }
 
-/* 笔记内容区样式 */
-#note-content {
-    background-color: #fff;
-    border-radius: 8px;
-    padding: 40px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    min-height: calc(100vh - 140px);
-}
-
-/* 暗黑模式下内容区样式 */
-body.dark-mode #note-content {
-    background-color: #2d2d2d;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-}
-
-/* Markdown渲染样式（适配暗黑模式） */
-#note-content h1 {
-    font-size: 2rem;
-    margin-bottom: 20px;
-    color: #2d3748;
-}
-
-body.dark-mode #note-content h1 {
-    color: #f0f0f0;
-}
-
-#note-content h2 {
-    font-size: 1.5rem;
-    margin: 30px 0 15px;
-    color: #4a5568;
-    border-bottom: 1px solid #eee;
-    padding-bottom: 8px;
-}
-
-body.dark-mode #note-content h2 {
-    color: #e0e0e0;
-    border-bottom-color: #444;
-}
-
-#note-content p {
-    margin: 15px 0;
-    line-height: 1.8;
-}
-
-body.dark-mode #note-content p {
-    color: #d0d0d0;
-}
-
-#note-content ul, #note-content ol {
-    margin: 15px 0 15px 30px;
-}
-
-body.dark-mode #note-content ul, 
-body.dark-mode #note-content ol {
-    color: #d0d0d0;
-}
-
-#note-content li {
-    margin: 8px 0;
-    line-height: 1.6;
-}
-
-#note-content code {
-    background-color: #f8f8f8;
-    padding: 2px 6px;
-    border-radius: 4px;
-    font-family: 'Consolas', monospace;
-}
-
-body.dark-mode #note-content code {
-    background-color: #444;
-    color: #f0f0f0;
-}
-
-#note-content blockquote {
-    border-left: 4px solid #ddd;
-    padding: 10px 15px;
-    margin: 15px 0;
-    background-color: #f9f9f9;
-}
-
-body.dark-mode #note-content blockquote {
-    border-left-color: #666;
-    background-color: #333;
-    color: #d0d0d0;
-}
-
-#note-content table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 20px 0;
-}
-
-#note-content th, #note-content td {
-    border: 1px solid #eee;
-    padding: 12px;
-    text-align: left;
-}
-
-body.dark-mode #note-content th, 
-body.dark-mode #note-content td {
-    border-color: #444;
-    color: #d0d0d0;
-}
-
-#note-content th {
-    background-color: #f5f5f5;
-}
-
-body.dark-mode #note-content th {
-    background-color: #3a3a3a;
-}
-
-/* 欢迎页面样式 */
-.welcome {
-    text-align: center;
-    padding: 50px 0;
-}
-
-.welcome h1 {
-    color: #3182ce;
-    margin-bottom: 30px;
-}
-
-body.dark-mode .welcome h1 {
-    color: #4299e1;
-}
-
-.welcome ol {
-    display: inline-block;
-    text-align: left;
-    margin-top: 20px;
-}
-
-/* 响应式适配 */
+/* 响应式适配调整 */
 @media (max-width: 768px) {
-    .sidebar {
-        width: 100%;
-        height: auto;
-        position: relative;
-    }
-
-    .sidebar.collapsed {
-        width: 100%;
-        height: auto;
-    }
-
-    .sidebar.collapsed .sidebar-header h2 {
+    .sidebar.collapsed .dir-header span, 
+    .sidebar.collapsed .note-link span {
         display: inline-block;
     }
 
-    .sidebar.collapsed .search-box {
-        display: block;
+    .sidebar.collapsed .dir-icon, 
+    .sidebar.collapsed .note-icon {
+        margin-right: 8px;
     }
 
-    .sidebar.collapsed #note-list a {
-        font-size: 14px;
-        justify-content: flex-start;
-        padding: 8px 12px;
-    }
-
-    .sidebar.collapsed #note-list a::before {
-        content: "";
-    }
-
-    .content {
-        margin-left: 0;
-        max-width: 100%;
-        padding: 20px;
-    }
-
-    .sidebar.collapsed ~ .content {
-        margin-left: 0;
-        max-width: 100%;
-    }
-
-    #note-content {
-        padding: 20px;
+    .dir-children {
+        margin-left: 15px;
     }
 }
