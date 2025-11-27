@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="css/style.css">
 </head>
-<body class="light-mode">
+<body>
     <div class="container">
         <!-- 侧边栏：多级目录+搜索+排序 -->
         <aside class="sidebar" id="sidebar">
@@ -22,7 +22,6 @@
             <!-- 搜索框 -->
             <div class="search-box">
                 <input type="text" id="search-input" placeholder="搜索笔记名/内容...">
-                <i class="fa fa-search search-icon"></i>
             </div>
             
             <!-- 排序按钮 -->
@@ -40,11 +39,10 @@
         <!-- 主内容区 -->
         <main class="content" id="content">
             <div class="content-header">
+                <div id="search-result-tip" class="search-result-tip"></div>
                 <button id="toggle-theme" class="theme-toggle">
                     <i class="fa fa-moon-o"></i> 暗黑模式
                 </button>
-                <!-- 搜索结果提示 -->
-                <div id="search-result-tip" class="search-result-tip"></div>
             </div>
             
             <div id="note-content">
@@ -55,8 +53,8 @@
                     <ol>
                         <li>在 <code>notes/</code> 中直接创建文件夹（支持嵌套）</li>
                         <li>在文件夹中创建 <code>.md</code> 笔记（命名建议：序号-笔记名.md）</li>
-                        <li>本地运行 <code>node generate-index.js</code> 生成索引</li>
-                        <li>Git推送到GitHub，刷新网页即可看到</li>
+                        <li>推送到GitHub，自动生成索引（无需本地操作）</li>
+                        <li>刷新网页即可看到新笔记</li>
                     </ol>
                 </div>
             </div>
