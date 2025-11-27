@@ -4,41 +4,55 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Lark 的笔记站</title>
-  <!-- Docsify 核心 -->
+  
+  <!-- Docsify 主程序 -->
   <script src="https://cdn.jsdelivr.net/npm/docsify@4"></script>
-  <!-- 主题（我给你配了最好看的） -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify/themes/vue.css">
+  
+  <!-- 最好看的主题 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify-themeable/dist/css/theme-simple.css">
+  
   <!-- 搜索插件 -->
   <script src="https://cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
-  <!-- 代码复制按钮 -->
+  
+  <!-- 代码一键复制 -->
   <script src="https://cdn.jsdelivr.net/npm/docsify-copy-code"></script>
-  <!-- 深色模式切换 -->
+  
+  <!-- 深色模式 -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify-dark-mode@latest/dist/style.css">
   <script src="https://cdn.jsdelivr.net/npm/docsify-dark-mode@latest/dist/index.min.js"></script>
+  
+  <!-- 关键：自动生成侧边栏的插件（支持文件夹结构、自动折叠） -->
+  <script src="https://cdn.jsdelivr.net/npm/docsify-plugin-flexible-sidebar/dist/flexible-sidebar.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify-plugin-flexible-sidebar/dist/flexible-sidebar.css">
 </head>
 <body>
-  <!-- Docsify 会自动把 Markdown 渲染到这里 -->
   <div id="app"></div>
 
   <script>
     window.$docsify = {
       name: 'Lark 的笔记',
-      repo: 'lark0613/notes',  // 右上角显示 GitHub 图标
-      maxLevel: 4,             // 解析标题深度
-      loadSidebar: '_sidebar.md',  // 启用侧边栏目录
-      subMaxLevel: 3,          // 侧边栏支持三级目录
-      alias: {
-        '/.*/_sidebar.md': '/_sidebar.md'  // 让所有路径都能加载侧边栏
+      repo: 'lark0613/notes',
+      maxLevel: 6,
+      loadSidebar: true,        // 启用自动侧边栏
+      auto2top: true,
+      homepage: 'README.md',    // 首页显示 README.md
+      coverpage: false,
+      
+      // 自动侧边栏配置（重点！）
+      flexibleSidebar: {
+        // 自动扫描所有 .md 文件
+        include: ['**/*.md'],
+        // 排除某些文件
+        exclude: ['node_modules/', 'README.md', 'index.html'],
+        // 按文件夹结构生成树形目录
+        folderMode: true,
+        // 显示文件夹图标
+        folderIcon: true
       },
+      
       search: {
         placeholder: '搜索笔记...',
-        noDataなどに: '没找到哦~'
-      },
-      darkMode: {
-        dark: {
-          background: '#1e1e1e',
-          color: '#ddd'
-        }
+        noData: '找不到结果~'
       }
     }
   </script>
