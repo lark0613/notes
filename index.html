@@ -5,43 +5,42 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Lark 的笔记站</title>
   
-  <!-- Docsify 核心 JS 先加载 -->
-  <script src="https://cdn.jsdelivr.net/npm/docsify@4/lib/docsify.min.js"></script>
-  
-  <!-- 主题 CSS -->
+  <!-- 主题 CSS 先加载 -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify@4/themes/vue.css">
 </head>
 <body>
-  <!-- Docsify 会把内容渲染到这里 -->
+  <!-- Docsify 渲染容器 -->
   <div id="app"></div>
   
-  <!-- 配置脚本放最后，确保 DOM 就位 -->
+  <!-- Docsify JS 放最后，确保 DOM 加载 -->
+  <script src="https://cdn.jsdelivr.net/npm/docsify@4/lib/docsify.min.js"></script>
+  
   <script>
-    // 延迟初始化，防 clientWidth null 错误
-    function initDocsify() {
-      if (typeof Docsify !== 'undefined' && document.body) {
-        window.$docsify = {
-          name: 'Lark 的笔记',
-          repo: 'lark0613/notes',
-          loadSidebar: '_sidebar.md',
-          homepage: 'README.md',
-          maxLevel: 4,
-          // 加这个：相对路径支持，确保侧边栏加载
-          relativePath: true
-        };
-        Docsify();
-      } else {
-        // 如果还没准备好，1 秒后重试（最多 5 次）
-        setTimeout(initDocsify, 1000);
-      }
-    }
-    
-    // 等页面加载完再初始化
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initDocsify);
-    } else {
-      initDocsify();
-    }
+    // 强延迟初始化 + 错误捕获
+    window.addEventListener('load', function() {
+      setTimeout(function() {
+        try {
+          if (typeof Docsify !== 'undefined' && document.getElementById('app')) {
+            window.$docsify = {
+              name: 'Lark 的笔记',
+              repo: 'lark0613/notes',
+              loadSidebar: '_sidebar.md',  // 加载侧边栏
+              homepage: 'README.md',       // 首页
+              maxLevel: 4,
+              relativePath: true           // 支持相对路径
+            };
+            Docsify();  // 启动 Docsify
+            console.log('Docsify 初始化成功！');  // Console 确认
+          } else {
+            throw new Error('Docsify 或 #app 未加载');
+          }
+        } catch (error) {
+          console.error('Docsify 初始化失败:', error);
+          // 备用：直接显示 README.md 内容，避免白屏
+          document.getElementById('app').innerHTML = '<h1>笔记站加载中... 请刷新试试</h1>';
+        }
+      }, 500);  // 额外 500ms 延迟，确保 body.clientWidth 可用
+    });
   </script>
 </body>
 </html>
