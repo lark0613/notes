@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的笔记仓库</title>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <!-- 引入图标库（用于按钮图标） -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
+</head>
+<body class="light-mode"> <!-- 默认浅色模式 -->
+    <div class="container">
+        <!-- 侧边栏（新增收缩按钮） -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h2>📝 笔记目录</h2>
+                <button id="toggle-sidebar" class="sidebar-toggle">
+                    <i class="fa fa-angle-left"></i> <!-- 收缩图标 -->
+                </button>
+            </div>
+            
+            <!-- 搜索框 -->
+            <div class="search-box">
+                <input type="text" id="search-input" placeholder="搜索笔记...">
+                <i class="fa fa-search search-icon"></i>
+            </div>
+            
+            <ul id="note-list"></ul> <!-- 自动生成目录 -->
+        </aside>
+
+        <!-- 主界面（新增明暗切换按钮） -->
+        <main class="content" id="content">
+            <div class="content-header">
+                <button id="toggle-theme" class="theme-toggle">
+                    <i class="fa fa-moon-o"></i> <!-- 默认显示月亮图标（切换暗黑） -->
+                </button>
+            </div>
+            
+            <div id="note-content">
+                <div class="welcome">
+                    <h1>欢迎来到我的笔记仓库</h1>
+                    <p>选择左侧目录中的笔记查看内容</p>
+                    <p>📌 如何新增笔记？</p>
+                    <ol>
+                        <li>直接在 <code>notes/</code> 文件夹中创建 <code>.md</code> 格式文件</li>
+                        <li>用Git推送到GitHub仓库</li>
+                        <li>刷新本页面即可自动识别新笔记（可能需等1-2分钟）</li>
+                    </ol>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
