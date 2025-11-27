@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lark 的笔记站</title>
+  <!-- Docsify 核心 -->
+  <script src="https://cdn.jsdelivr.net/npm/docsify@4"></script>
+  <!-- 主题（我给你配了最好看的） -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify/themes/vue.css">
+  <!-- 搜索插件 -->
+  <script src="https://cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
+  <!-- 代码复制按钮 -->
+  <script src="https://cdn.jsdelivr.net/npm/docsify-copy-code"></script>
+  <!-- 深色模式切换 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify-dark-mode@latest/dist/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/docsify-dark-mode@latest/dist/index.min.js"></script>
+</head>
+<body>
+  <!-- Docsify 会自动把 Markdown 渲染到这里 -->
+  <div id="app"></div>
+
+  <script>
+    window.$docsify = {
+      name: 'Lark 的笔记',
+      repo: 'lark0613/notes',  // 右上角显示 GitHub 图标
+      maxLevel: 4,             // 解析标题深度
+      loadSidebar: '_sidebar.md',  // 启用侧边栏目录
+      subMaxLevel: 3,          // 侧边栏支持三级目录
+      alias: {
+        '/.*/_sidebar.md': '/_sidebar.md'  // 让所有路径都能加载侧边栏
+      },
+      search: {
+        placeholder: '搜索笔记...',
+        noDataなどに: '没找到哦~'
+      },
+      darkMode: {
+        dark: {
+          background: '#1e1e1e',
+          color: '#ddd'
+        }
+      }
+    }
+  </script>
+</body>
+</html>
