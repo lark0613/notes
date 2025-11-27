@@ -5,56 +5,36 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Lark 的笔记站</title>
   
-  <!-- Docsify 主程序 -->
+  <!-- Docsify 核心 -->
   <script src="https://cdn.jsdelivr.net/npm/docsify@4"></script>
   
-  <!-- 最好看的主题 -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify-themeable/dist/css/theme-simple.css">
+  <!-- 经典主题 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify/themes/vue.css">
   
   <!-- 搜索插件 -->
   <script src="https://cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
   
-  <!-- 代码一键复制 -->
-  <script src="https://cdn.jsdelivr.net/npm/docsify-copy-code"></script>
+  <!-- 代码复制 -->
+  <script src="https://cdn.jsdelivr.net/npm/docsify-copy-code@2"></script>
   
   <!-- 深色模式 -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify-dark-mode@latest/dist/style.css">
-  <script src="https://cdn.jsdelivr.net/npm/docsify-dark-mode@latest/dist/index.min.js"></script>
-  
-  <!-- 关键：自动生成侧边栏的插件（支持文件夹结构、自动折叠） -->
-  <script src="https://cdn.jsdelivr.net/npm/docsify-plugin-flexible-sidebar/dist/flexible-sidebar.min.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify-plugin-flexible-sidebar/dist/flexible-sidebar.css">
+  <script src="https://cdn.jsdelivr.net/npm/docsify-dark-mode@2"></script>
 </head>
 <body>
   <div id="app"></div>
 
-  <script>
+  <script type="text/javascript">
+    /* VS Code: 这下面是 JavaScript 配置对象 */
     window.$docsify = {
       name: 'Lark 的笔记',
       repo: 'lark0613/notes',
       maxLevel: 6,
-      loadSidebar: true,        // 启用自动侧边栏
-      auto2top: true,
-      homepage: 'README.md',    // 首页显示 README.md
-      coverpage: false,
-      
-      // 自动侧边栏配置（重点！）
-      flexibleSidebar: {
-        // 自动扫描所有 .md 文件
-        include: ['**/*.md'],
-        // 排除某些文件
-        exclude: ['node_modules/', 'README.md', 'index.html'],
-        // 按文件夹结构生成树形目录
-        folderMode: true,
-        // 显示文件夹图标
-        folderIcon: true
-      },
-      
-      search: {
-        placeholder: '搜索笔记...',
-        noData: '找不到结果~'
-      }
-    }
+      loadSidebar: true,  // 自动加载侧边栏（会扫描所有 .md 文件）
+      relativePath: true, // 支持子文件夹
+      homepage: 'README.md',
+      search: 'auto',     // 自动搜索
+      auto2top: true
+    };
   </script>
 </body>
 </html>
