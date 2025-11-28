@@ -18,6 +18,19 @@
     },
     {
       "type": "dir",
+      "name": "AI copy",
+      "path": "AI copy",
+      "children": [
+        {
+          "type": "note",
+          "name": "解决问题",
+          "path": "AI copy/解决问题.md",
+          "sortKey": 999
+        }
+      ]
+    },
+    {
+      "type": "dir",
       "name": "制作",
       "path": "制作",
       "children": [
@@ -87,5 +100,5 @@
       "sortKey": 999
     }
   ],
-  "generatedAt": "2025-11-28T22:04:04.049Z"
+  "generatedAt": "2025-11-28T22:08:59.351Z"
 }
