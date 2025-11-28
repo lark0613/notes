@@ -18,32 +18,6 @@
     },
     {
       "type": "dir",
-      "name": "AI copy",
-      "path": "AI copy",
-      "children": [
-        {
-          "type": "note",
-          "name": "解决问题",
-          "path": "AI copy/解决问题.md",
-          "sortKey": 999
-        }
-      ]
-    },
-    {
-      "type": "dir",
-      "name": "AI copy 2",
-      "path": "AI copy 2",
-      "children": [
-        {
-          "type": "note",
-          "name": "解决问题",
-          "path": "AI copy 2/解决问题.md",
-          "sortKey": 999
-        }
-      ]
-    },
-    {
-      "type": "dir",
       "name": "制作",
       "path": "制作",
       "children": [
@@ -76,16 +50,10 @@
     },
     {
       "type": "note",
-      "name": "神界原罪2 copy",
-      "path": "神界原罪2 copy.md",
-      "sortKey": 999
-    },
-    {
-      "type": "note",
       "name": "神界原罪2",
       "path": "神界原罪2.md",
       "sortKey": 999
     }
   ],
-  "generatedAt": "2025-11-28T22:44:48.045Z"
+  "generatedAt": "2025-11-28T22:49:48.532Z"
 }
