@@ -76,10 +76,16 @@
     },
     {
       "type": "note",
+      "name": "神界原罪2 copy",
+      "path": "神界原罪2 copy.md",
+      "sortKey": 999
+    },
+    {
+      "type": "note",
       "name": "神界原罪2",
       "path": "神界原罪2.md",
       "sortKey": 999
     }
   ],
-  "generatedAt": "2025-11-28T22:39:25.137Z"
+  "generatedAt": "2025-11-28T22:44:48.045Z"
 }
