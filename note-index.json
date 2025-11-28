@@ -52,6 +52,12 @@
           "name": "03-学习计划",
           "path": "2/03-学习计划.md",
           "sortKey": 3
+        },
+        {
+          "type": "note",
+          "name": "哈哈",
+          "path": "2/哈哈.md",
+          "sortKey": 999
         }
       ]
     },
@@ -62,5 +68,5 @@
       "sortKey": 1
     }
   ],
-  "generatedAt": "2025-11-28T02:57:34.628Z"
+  "generatedAt": "2025-11-28T03:18:27.723Z"
 }
