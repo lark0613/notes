@@ -1,0 +1,78 @@
+{
+  "type": "dir",
+  "name": "notes",
+  "path": "",
+  "children": [
+    {
+      "type": "dir",
+      "name": "1",
+      "path": "1",
+      "children": [
+        {
+          "type": "dir",
+          "name": "4",
+          "path": "1/4",
+          "children": [
+            {
+              "type": "note",
+              "name": "05-测试专用",
+              "path": "1/4/05-测试专用.md",
+              "sortKey": 5
+            }
+          ]
+        },
+        {
+          "type": "note",
+          "name": "02-技术总结",
+          "path": "1/02-技术总结.md",
+          "sortKey": 2
+        }
+      ]
+    },
+    {
+      "type": "dir",
+      "name": "2",
+      "path": "2",
+      "children": [
+        {
+          "type": "dir",
+          "name": "3",
+          "path": "2/3",
+          "children": [
+            {
+              "type": "note",
+              "name": "04-AI辅助创作",
+              "path": "2/3/04-AI辅助创作.md",
+              "sortKey": 4
+            }
+          ]
+        },
+        {
+          "type": "note",
+          "name": "03-学习计划",
+          "path": "2/03-学习计划.md",
+          "sortKey": 3
+        },
+        {
+          "type": "note",
+          "name": "哈哈",
+          "path": "2/哈哈.md",
+          "sortKey": 999
+        }
+      ]
+    },
+    {
+      "type": "note",
+      "name": "01-基础笔记",
+      "path": "01-基础笔记.md",
+      "sortKey": 1
+    },
+    {
+      "type": "note",
+      "name": "嘻嘻",
+      "path": "嘻嘻.md",
+      "sortKey": 999
+    }
+  ],
+  "generatedAt": "2025-11-28T03:25:16.802Z"
+}
