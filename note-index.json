@@ -49,11 +49,43 @@
       ]
     },
     {
+      "type": "dir",
+      "name": "制作 copy",
+      "path": "制作 copy",
+      "children": [
+        {
+          "type": "dir",
+          "name": "记录",
+          "path": "制作 copy/记录",
+          "children": [
+            {
+              "type": "note",
+              "name": "踩坑记录",
+              "path": "制作 copy/记录/踩坑记录.md",
+              "sortKey": 999
+            }
+          ]
+        },
+        {
+          "type": "note",
+          "name": "游戏制作",
+          "path": "制作 copy/游戏制作.md",
+          "sortKey": 999
+        },
+        {
+          "type": "note",
+          "name": "网站制作",
+          "path": "制作 copy/网站制作.md",
+          "sortKey": 999
+        }
+      ]
+    },
+    {
       "type": "note",
       "name": "神界原罪2",
       "path": "神界原罪2.md",
       "sortKey": 999
     }
   ],
-  "generatedAt": "2025-11-28T22:49:48.532Z"
+  "generatedAt": "2025-11-28T22:54:22.680Z"
 }
