@@ -1,0 +1,53 @@
+{
+  "type": "dir",
+  "name": "notes",
+  "path": "",
+  "children": [
+    {
+      "type": "dir",
+      "name": "1",
+      "path": "1",
+      "children": [
+        {
+          "type": "note",
+          "name": "02-技术总结",
+          "path": "1/02-技术总结.md",
+          "sortKey": 2
+        }
+      ]
+    },
+    {
+      "type": "dir",
+      "name": "2",
+      "path": "2",
+      "children": [
+        {
+          "type": "dir",
+          "name": "3",
+          "path": "2/3",
+          "children": [
+            {
+              "type": "note",
+              "name": "04-AI辅助创作",
+              "path": "2/3/04-AI辅助创作.md",
+              "sortKey": 4
+            }
+          ]
+        },
+        {
+          "type": "note",
+          "name": "03-学习计划",
+          "path": "2/03-学习计划.md",
+          "sortKey": 3
+        }
+      ]
+    },
+    {
+      "type": "note",
+      "name": "01-基础笔记",
+      "path": "01-基础笔记.md",
+      "sortKey": 1
+    }
+  ],
+  "generatedAt": "2025-11-28T02:42:46.179Z"
+}
