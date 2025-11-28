@@ -3,7 +3,7 @@ on:
   push:
     branches: [ main ]
     paths:
-      - 'notes/**' # 只有notes文件夹变化时触发
+      - 'notes/**' # 只有 notes 文件夹变化时触发
 
 jobs:
   generate-index:
@@ -12,90 +12,67 @@ jobs:
       - name: 拉取代码
         uses: actions/checkout@v4
 
-      - name: 安装Node.js
+      - name: 安装 Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '20' # 稳定版本，避免兼容性问题
 
-      - name: 创建索引生成脚本
+      - name: 创建并运行索引脚本
         run: |
+          # 1. 创建 generate-index.js 脚本
           cat > generate-index.js << 'EOF'
           const fs = require('fs');
           const path = require('path');
-
-          // 笔记根目录
           const NOTES_ROOT = path.join(__dirname, 'notes');
-          // 输出索引文件路径
           const INDEX_OUTPUT = path.join(__dirname, 'note-index.json');
 
-          // 扫描文件夹生成索引
           function scanNotesDir(currentDir, relativeDir = '') {
-              const result = {
-                  type: 'dir',
-                  name: path.basename(currentDir),
-                  path: relativeDir,
-                  children: []
-              };
-
+              const result = { type: 'dir', name: path.basename(currentDir), path: relativeDir, children: [] };
               try {
                   const files = fs.readdirSync(currentDir, { withFileTypes: true });
                   const dirs = [];
                   const notes = [];
-
                   files.forEach(file => {
                       const filePath = path.join(currentDir, file.name);
                       const fileRelativePath = relativeDir ? `${relativeDir}/${file.name}` : file.name;
-
-                      if (file.isDirectory()) {
-                          const subDir = scanNotesDir(filePath, fileRelativePath);
-                          dirs.push(subDir);
-                      } else if (file.isFile() && file.name.endsWith('.md')) {
+                      if (file.isDirectory()) dirs.push(scanNotesDir(filePath, fileRelativePath));
+                      else if (file.isFile() && file.name.endsWith('.md')) {
                           const noteName = file.name.replace('.md', '');
                           const sortKey = noteName.match(/^(\d+)-/) ? parseInt(noteName.match(/^(\d+)-/)[1]) : 999;
-                          notes.push({
-                              type: 'note',
-                              name: noteName,
-                              path: fileRelativePath,
-                              sortKey: sortKey
-                          });
+                          notes.push({ type: 'note', name: noteName, path: fileRelativePath, sortKey: sortKey });
                       }
                   });
-
                   dirs.sort((a, b) => a.name.localeCompare(b.name));
                   notes.sort((a, b) => a.sortKey - b.sortKey);
                   result.children = [...dirs, ...notes];
-              } catch (error) {
-                  console.error('扫描目录错误:', currentDir, error.message);
-              }
-
+              } catch (e) { console.error('扫描失败：', e.message); }
               return result;
           }
 
-          // 生成索引
           try {
-              // 检查notes目录是否存在
-              if (!fs.existsSync(NOTES_ROOT)) {
-                  fs.mkdirSync(NOTES_ROOT, { recursive: true });
-                  console.log('创建notes目录');
-              }
-
+              if (!fs.existsSync(NOTES_ROOT)) fs.mkdirSync(NOTES_ROOT, { recursive: true });
               const noteIndex = scanNotesDir(NOTES_ROOT);
               noteIndex.generatedAt = new Date().toISOString();
               fs.writeFileSync(INDEX_OUTPUT, JSON.stringify(noteIndex, null, 2), 'utf-8');
-              console.log('✅ 索引文件生成成功');
-          } catch (error) {
-              console.error('❌ 索引生成失败:', error.message);
-              process.exit(1);
-          }
+              console.log('索引生成成功');
+          } catch (e) { console.error('生成失败：', e.message); process.exit(1); }
           EOF
 
-      - name: 运行脚本生成索引
-        run: node generate-index.js
+          # 2. 运行脚本
+          node generate-index.js
+
+          # 3. 检查索引文件是否生成
+          if [ -f "note-index.json" ]; then
+              echo "索引文件存在，大小：$(du -sh note-index.json)"
+          else
+              echo "索引文件未生成！"
+              exit 1
+          fi
 
       - name: 提交索引文件
         run: |
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
           git add note-index.json
-          git commit -m "自动更新笔记索引" || echo "无索引变化"
+          git commit -m "自动生成笔记索引" || echo "无索引变化"
           git push
