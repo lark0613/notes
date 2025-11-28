@@ -1,18 +1,18 @@
 // 全局变量
-let noteIndex = null; // 索引数据
-let allNotesFlat = []; // 扁平化笔记列表
-let filteredNotes = []; // 搜索过滤后的笔记
-let currentSortType = 'name'; // 当前排序类型
+let noteIndex = null;
+let allNotesFlat = [];
+let filteredNotes = [];
+let currentSortType = 'name';
 
-// 1. 加载本地索引文件
+// 1. 加载索引文件
 async function loadNoteIndex() {
   try {
     const response = await fetch('note-index.json');
     if (!response.ok) throw new Error('索引文件加载失败');
     noteIndex = await response.json();
-    flattenNoteIndex(noteIndex); // 扁平化索引
-    sortNotes(currentSortType); // 初始排序
-    renderNoteTree(noteIndex.children); // 渲染目录
+    flattenNoteIndex(noteIndex);
+    sortNotes(currentSortType);
+    renderNoteTree(noteIndex.children);
     document.getElementById('search-result-tip').textContent = `共${allNotesFlat.length}篇笔记`;
   } catch (error) {
     console.error('索引加载失败：', error.message);
@@ -24,14 +24,14 @@ async function loadNoteIndex() {
   }
 }
 
-// 2. 扁平化索引（多级转一维）
+// 2. 扁平化索引
 function flattenNoteIndex(node) {
   if (node.type === 'note') {
     allNotesFlat.push({
       name: node.name,
       path: node.path,
       sortKey: node.sortKey,
-      content: null // 内容缓存
+      content: null
     });
     return;
   }
@@ -40,7 +40,7 @@ function flattenNoteIndex(node) {
   }
 }
 
-// 3. 渲染多级目录（修复子文件夹展开）
+// 3. 渲染多级目录
 function renderNoteTree(children, parentElement = null) {
   const treeContainer = parentElement || document.getElementById('note-tree');
   treeContainer.innerHTML = '';
@@ -57,10 +57,8 @@ function renderNoteTree(children, parentElement = null) {
         </div>
         <ul class="dir-children"></ul>
       `;
-      // 递归渲染子目录
       const childContainer = li.querySelector('.dir-children');
       renderNoteTree(node.children, childContainer);
-      // 绑定展开/折叠事件
       const dirHeader = li.querySelector('.dir-header');
       dirHeader.addEventListener('click', () => {
         li.classList.toggle('dir-expanded');
@@ -84,7 +82,7 @@ function renderNoteTree(children, parentElement = null) {
   });
 }
 
-// 4. 加载笔记（支持内容高亮）
+// 4. 加载笔记
 async function loadNote(notePath, noteLink, keyword = '') {
   const contentContainer = document.getElementById('note-content');
   try {
@@ -97,10 +95,9 @@ async function loadNote(notePath, noteLink, keyword = '') {
       const response = await fetch(`notes/${notePath}`);
       if (!response.ok) throw new Error('笔记不存在');
       markdownContent = await response.text();
-      if (note) note.content = markdownContent; // 缓存内容
+      if (note) note.content = markdownContent;
     }
 
-    // 内容高亮处理
     let htmlContent = marked.parse(markdownContent);
     if (keyword) {
       htmlContent = htmlContent.replace(
@@ -119,12 +116,12 @@ async function loadNote(notePath, noteLink, keyword = '') {
   }
 }
 
-// 5. 搜索功能（支持内容搜索）
+// 5. 搜索功能（重点修复：搜索时只显示匹配结果）
 function initSearch() {
   const searchInput = document.getElementById('search-input');
   const resultTip = document.getElementById('search-result-tip');
 
-  // 预加载所有笔记内容（后台执行）
+  // 预加载笔记内容
   async function preloadAllNotes() {
     for (const note of allNotesFlat) {
       if (!note.content) {
@@ -137,18 +134,18 @@ function initSearch() {
   }
   setTimeout(preloadAllNotes, 1000);
 
-  // 搜索输入事件（带防抖）
+  // 搜索输入事件
   searchInput.addEventListener('input', debounce(async (e) => {
     const keyword = e.target.value.trim().toLowerCase();
+    
     if (!keyword) {
-      filteredNotes = [...allNotesFlat];
-      sortNotes(currentSortType);
+      // 无搜索词：显示完整目录
       renderNoteTree(noteIndex.children);
       resultTip.textContent = `共${allNotesFlat.length}篇笔记`;
       return;
     }
 
-    // 搜索匹配（名称+内容）
+    // 有搜索词：只显示匹配结果
     filteredNotes = allNotesFlat.filter(note => {
       const nameMatch = note.name.toLowerCase().includes(keyword);
       const contentMatch = note.content ? note.content.toLowerCase().includes(keyword) : false;
@@ -158,24 +155,28 @@ function initSearch() {
     sortNotes(currentSortType);
     resultTip.textContent = `找到${filteredNotes.length}篇匹配笔记`;
 
-    // 渲染搜索结果
+    // 渲染搜索结果（替换原有目录）
     const treeContainer = document.getElementById('note-tree');
     treeContainer.innerHTML = '';
+    
     if (filteredNotes.length === 0) {
       treeContainer.innerHTML = '<li><span style="padding: 8px 20px; display: block; color: #94a3b8;">无匹配笔记</span></li>';
       return;
     }
 
+    // 只显示匹配的笔记
     filteredNotes.forEach(note => {
       const li = document.createElement('li');
       li.className = 'note-item';
       const noteLink = document.createElement('a');
       noteLink.className = 'note-link';
-      // 高亮笔记名关键词
+      
+      // 高亮笔记名中的关键词
       const highlightedName = note.name.replace(
         new RegExp(`(${keyword})`, 'gi'),
         '<span class="highlight">$1</span>'
       );
+      
       noteLink.innerHTML = `
         <i class="fa fa-file-text-o note-icon"></i>
         <span>${highlightedName}</span>
@@ -191,20 +192,23 @@ function initSearch() {
   }, 300));
 }
 
-// 6. 笔记排序功能
+// 6. 排序功能
 function initSort() {
   const sortSelect = document.getElementById('sort-select');
   sortSelect.value = currentSortType;
 
   sortSelect.addEventListener('change', (e) => {
     currentSortType = e.target.value;
-    const targetNotes = document.getElementById('search-input').value.trim() ? filteredNotes : allNotesFlat;
-    sortNotes(currentSortType);
-    
-    // 重新渲染
     const keyword = document.getElementById('search-input').value.trim();
+    
     if (keyword) {
-      // 搜索状态：重新渲染搜索结果
+      // 搜索状态：排序搜索结果
+      filteredNotes.sort((a, b) => {
+        return currentSortType === 'name' 
+          ? a.name.localeCompare(b.name) 
+          : a.sortKey - b.sortKey;
+      });
+      // 重新渲染搜索结果
       const treeContainer = document.getElementById('note-tree');
       treeContainer.innerHTML = '';
       filteredNotes.forEach(note => {
@@ -225,7 +229,8 @@ function initSort() {
         treeContainer.appendChild(li);
       });
     } else {
-      // 非搜索状态：重新渲染目录
+      // 非搜索状态：排序目录
+      sortNotes(currentSortType);
       renderNoteTree(noteIndex.children);
     }
   });
@@ -235,11 +240,9 @@ function initSort() {
 function sortNotes(sortType) {
   currentSortType = sortType;
   allNotesFlat.sort((a, b) => {
-    if (sortType === 'name') {
-      return a.name.localeCompare(b.name); // 按名称排序
-    } else {
-      return a.sortKey - b.sortKey; // 按序号（创建时间）排序
-    }
+    return sortType === 'name' 
+      ? a.name.localeCompare(b.name) 
+      : a.sortKey - b.sortKey;
   });
   filteredNotes = [...allNotesFlat];
 }
@@ -248,33 +251,20 @@ function sortNotes(sortType) {
 function initSidebarToggle() {
   const toggleBtn = document.getElementById('toggle-sidebar');
   const sidebar = document.getElementById('sidebar');
-  const content = document.getElementById('content');
   
   toggleBtn.addEventListener('click', () => {
     sidebar.classList.toggle('collapsed');
     const icon = toggleBtn.querySelector('i');
     icon.classList.toggle('fa-angle-left');
     icon.classList.toggle('fa-angle-right');
-    
-    // 调整主内容区宽度
-    if (sidebar.classList.contains('collapsed')) {
-      sidebar.style.width = '60px';
-      content.style.marginLeft = '60px';
-      content.style.maxWidth = 'calc(100% - 60px)';
-    } else {
-      sidebar.style.width = '280px';
-      content.style.marginLeft = '280px';
-      content.style.maxWidth = 'calc(100% - 280px)';
-    }
   });
 }
 
-// 8. 明暗模式切换（修复失效）
+// 8. 明暗模式切换
 function initThemeToggle() {
   const toggleBtn = document.getElementById('toggle-theme');
   const body = document.body;
 
-  // 初始化主题（优先本地存储，其次系统偏好）
   function initTheme() {
     const savedTheme = localStorage.getItem('noteTheme');
     const isDark = savedTheme === 'dark' || 
@@ -289,7 +279,6 @@ function initThemeToggle() {
   }
   initTheme();
 
-  // 切换主题
   toggleBtn.addEventListener('click', () => {
     const isDark = body.classList.toggle('dark-mode');
     if (isDark) {
@@ -302,7 +291,7 @@ function initThemeToggle() {
   });
 }
 
-// 工具函数：防抖
+// 防抖工具函数
 function debounce(fn, delay) {
   let timer = null;
   return function(...args) {
@@ -311,7 +300,7 @@ function debounce(fn, delay) {
   };
 }
 
-// 初始化所有功能
+// 初始化
 window.onload = () => {
   loadNoteIndex();
   initSearch();
