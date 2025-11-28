@@ -9,6 +9,19 @@
       "path": "1",
       "children": [
         {
+          "type": "dir",
+          "name": "4",
+          "path": "1/4",
+          "children": [
+            {
+              "type": "note",
+              "name": "05-测试专用",
+              "path": "1/4/05-测试专用.md",
+              "sortKey": 5
+            }
+          ]
+        },
+        {
           "type": "note",
           "name": "02-技术总结",
           "path": "1/02-技术总结.md",
@@ -49,5 +62,5 @@
       "sortKey": 1
     }
   ],
-  "generatedAt": "2025-11-28T02:42:46.179Z"
+  "generatedAt": "2025-11-28T02:57:34.628Z"
 }
