@@ -53,14 +53,14 @@ function renderFullNoteTree() {
   renderTreeNodes(noteIndex.children, noteTreeContainer);
 }
 
-// 4. 递归渲染目录节点（文件夹+笔记）
+// 4. 递归渲染目录节点（修复二级文件夹折叠）
 function renderTreeNodes(children, parentElement) {
   children.forEach(node => {
     const li = document.createElement('li');
     li.className = node.type === 'dir' ? 'dir-item' : 'note-item';
 
     if (node.type === 'dir') {
-      // 文件夹节点
+      // 文件夹节点（所有层级都添加折叠逻辑）
       li.innerHTML = `
         <div class="dir-header">
           <i class="fa fa-folder dir-icon"></i>
@@ -69,12 +69,13 @@ function renderTreeNodes(children, parentElement) {
         <ul class="dir-children"></ul>
       `;
       const childContainer = li.querySelector('.dir-children');
-      // 递归渲染子节点
+      // 递归渲染子节点（包含二级/多级文件夹）
       if (node.children && node.children.length > 0) {
         renderTreeNodes(node.children, childContainer);
       }
-      // 折叠/展开事件
-      li.querySelector('.dir-header').addEventListener('click', () => {
+      // 给所有层级文件夹绑定折叠/展开事件
+      const dirHeader = li.querySelector('.dir-header');
+      dirHeader.addEventListener('click', () => {
         li.classList.toggle('dir-expanded');
       });
     } else {
