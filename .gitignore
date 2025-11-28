@@ -1,3 +1,0 @@
-# 本地忽略 note-index.json（CI 环境不忽略）
-!CI=true
-note-index.json
